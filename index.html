@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Facility Reservation and Monitoring System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= LOGIN PAGE ================= -->
+<div id="loginPage" class="login-page">
+    <div class="login-container">
+        <div class="login-header">
+            <div class="login-icon">🏫</div>
+            <h1>Campus Facility</h1>
+            <h2>Reservation & Monitoring System</h2>
+            <p>Sign in to continue</p>
+        </div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="loginUsername">Username</label>
+                <input
+                    type="text"
+                    id="loginUsername"
+                    placeholder="Enter username"
+                    required
+                    autocomplete="username"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Enter password"
+                    required
+                    autocomplete="current-password"
+                >
+            </div>
+
+            <div id="loginError" class="login-error"></div>
+
+            <button type="submit" class="login-btn">
+                🔐 Login
+            </button>
+        </form>
+
+        <div class="demo-accounts">
+            <h3>Demo Accounts</h3>
+
+            <div class="account">
+                <strong>Student</strong>
+                <span>student / student123</span>
+            </div>
+
+            <div class="account">
+                <strong>Administrator</strong>
+                <span>admin / admin123</span>
+            </div>
+
+            <div class="account">
+                <strong>Security</strong>
+                <span>security / security123</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ================= MAIN SYSTEM ================= -->
+<div id="systemPage" class="system-page hidden">
+
+    <!-- HEADER -->
+    <header class="main-header">
+        <div class="header-content">
+            <div>
+                <h1>Campus Facility Reservation and Monitoring System</h1>
+                <p>Campus Facility Management Portal</p>
+            </div>
+
+            <div class="user-section">
+                <div class="user-info">
+                    <span id="currentUserName">User</span>
+                    <small id="currentUserRole">Student</small>
+                </div>
+
+                <button id="logoutBtn" class="logout-btn">
+                    🚪 Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- NAVIGATION -->
+    <nav class="main-nav">
+        <button class="nav-btn active" data-page="dashboardPage">
+            🏠 Dashboard
+        </button>
+
+        <button class="nav-btn" data-page="availabilityPage">
+            🔎 Check Availability
+        </button>
+
+        <button class="nav-btn" data-page="reservationPage">
+            📝 Make Reservation
+        </button>
+
+        <button class="nav-btn" data-page="myReservationsPage">
+            📋 My Reservations
+        </button>
+
+        <button class="nav-btn" data-page="facilitiesPage">
+            🏢 Facilities
+        </button>
+
+        <button class="nav-btn admin-only" data-page="administrationPage">
+            ⚙️ Administration
+        </button>
+
+        <button class="nav-btn" data-page="reportsPage">
+            📊 Reports
+        </button>
+
+        <button class="nav-btn security-only" data-page="securityPage">
+            🛡️ Security
+        </button>
+    </nav>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- ================= DASHBOARD ================= -->
+        <section id="dashboardPage" class="page active-page">
+
+            <div class="page-title">
+                <h2>Dashboard</h2>
+                <p>Welcome to the Campus Facility Reservation System.</p>
+            </div>
+
+            <div class="dashboard-cards">
+
+                <div class="dashboard-card">
+                    <div class="card-icon">🏢</div>
+                    <div>
+                        <h3 id="totalFacilities">0</h3>
+                        <p>Total Facilities</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">✅</div>
+                    <div>
+                        <h3 id="availableToday">0</h3>
+                        <p>Available Today</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">⏳</div>
+                    <div>
+                        <h3 id="pendingRequests">0</h3>
+                        <p>Pending Requests</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-icon">📅</div>
+                    <div>
+                        <h3 id="myReservationCount">0</h3>
+                        <p>My Reservations</p>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+                <h3>System Overview</h3>
+
+                <p>
+                    The Campus Facility Reservation and Monitoring System
+                    allows authorized users to check facility availability,
+                    submit reservation requests, monitor reservation status,
+                    and manage facility utilization.
+                </p>
+
+                <div class="policy-alert">
+                    <strong>Important Policy:</strong>
+                    Reservations involving more than 100 participants
+                    require Security approval before final administrative
+                    approval.
+                </div>
+            </div>
+
+
+            <div class="panel">
+                <h3>Recent Reservations</h3>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Reservation ID</th>
+                                <th>Requester</th>
+                                <th>Facility</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Participants</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="recentReservationsTable">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ================= AVAILABILITY ================= -->
+        <section id="availabilityPage" class="page">
+
+            <div class="page-title">
+                <h2>Check Facility Availability</h2>
+                <p>Check whether a facility is available for a specific schedule.</p>
+            </div>
+
+            <div class="panel">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="availabilityFacility">Facility</label>
+
+                        <select id="availabilityFacility">
+                            <option value="">Select facility</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="availabilityDate">Date</label>
+                        <input type="date" id="availabilityDate">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="availabilityStart">Start Time</label>
+                        <input type="time" id="availabilityStart">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="availabilityEnd">End Time</label>
+                        <input type="time" id="availabilityEnd">
+                    </div>
+
+                </div>
+
+                <button id="checkAvailabilityBtn" class="primary-btn">
+                    🔎 Check Availability
+                </button>
+
+                <div id="availabilityResult"></div>
+
+            </div>
+        </section>
+
+
+        <!-- ================= RESERVATION ================= -->
+        <section id="reservationPage" class="page">
+
+            <div class="page-title">
+                <h2>Make a Reservation</h2>
+                <p>Submit a request to reserve a campus facility.</p>
+            </div>
+
+            <div class="panel">
+
+                <form id="reservationForm">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="requesterName">Requester Name</label>
+                            <input
+                                type="text"
+                                id="requesterName"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userType">User Type</label>
+
+                            <select id="userType" required>
+                                <option value="">Select user type</option>
+                                <option value="Student">Student</option>
+                                <option value="Faculty">Faculty</option>
+                                <option value="Staff">Staff</option>
+                                <option value="Student Organization">
+                                    Student Organization
+                                </option>
+                                <option value="External User">
+                                    External User
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reservationFacility">Facility</label>
+
+                            <select id="reservationFacility" required>
+                                <option value="">Select facility</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reservationDate">Date</label>
+                            <input type="date" id="reservationDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reservationStart">Start Time</label>
+                            <input type="time" id="reservationStart" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reservationEnd">End Time</label>
+                            <input type="time" id="reservationEnd" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="participants">
+                                Number of Participants
+                            </label>
+
+                            <input
+                                type="number"
+                                id="participants"
+                                min="1"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="purpose">Purpose</label>
+
+                            <textarea
+                                id="purpose"
+                                rows="3"
+                                required
+                                placeholder="Enter purpose of reservation"
+                            ></textarea>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="additionalDetails">
+                                Additional Details
+                            </label>
+
+                            <textarea
+                                id="additionalDetails"
+                                rows="3"
+                                placeholder="Optional additional information"
+                            ></textarea>
+                        </div>
+
+                    </div>
+
+                    <div id="reservationMessage"></div>
+
+                    <div class="button-group">
+                        <button type="submit" class="primary-btn">
+                            📝 Submit Reservation
+                        </button>
+
+                        <button
+                            type="reset"
+                            class="secondary-btn"
+                        >
+                            Clear
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </section>
+
+
+        <!-- ================= MY RESERVATIONS ================= -->
+        <section id="myReservationsPage" class="page">
+
+            <div class="page-title">
+                <h2>My Reservations</h2>
+                <p>View and manage your reservation requests.</p>
+            </div>
+
+            <div class="panel">
+
+                <div class="table-container">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Facility</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Participants</th>
+                                <th>Purpose</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="myReservationsTable">
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ================= FACILITIES ================= -->
+        <section id="facilitiesPage" class="page">
+
+            <div class="page-title">
+                <h2>Campus Facilities</h2>
+                <p>Available facilities and their reservation requirements.</p>
+            </div>
+
+            <div id="facilityCards" class="facility-grid">
+            </div>
+
+        </section>
+
+
+        <!-- ================= ADMINISTRATION ================= -->
+        <section id="administrationPage" class="page">
+
+            <div class="page-title">
+                <h2>Administration</h2>
+                <p>Review and manage reservation requests.</p>
+            </div>
+
+            <div class="panel">
+
+                <div class="table-container">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Requester</th>
+                                <th>Facility</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Participants</th>
+                                <th>Security</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="adminReservationsTable">
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ================= REPORTS ================= -->
+        <section id="reportsPage" class="page">
+
+            <div class="page-title">
+                <h2>Facility Utilization Reports</h2>
+                <p>Monitor facility usage and reservation statistics.</p>
+            </div>
+
+            <div class="panel">
+
+                <div id="reportContent">
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= SECURITY ================= -->
+        <section id="securityPage" class="page">
+
+            <div class="page-title">
+                <h2>Security Monitoring</h2>
+                <p>Monitor approved after-hours reservations.</p>
+            </div>
+
+            <div class="panel">
+
+                <div class="policy-alert">
+                    Reservations beginning at or after
+                    <strong>6:00 PM</strong> require security monitoring.
+                </div>
+
+                <div class="table-container">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Requester</th>
+                                <th>Facility</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Participants</th>
+                                <th>Security Approval</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="securityReservationsTable">
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="main-footer">
+        <p>
+            Campus Facility Reservation and Monitoring System
+        </p>
+        <p>
+            Academic Demonstration Project
+        </p>
+    </footer>
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
