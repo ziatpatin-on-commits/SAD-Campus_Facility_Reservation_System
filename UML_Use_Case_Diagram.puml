@@ -1,0 +1,107 @@
+@startuml
+title Campus Facility Reservation and Monitoring System - UML Use Case Diagram
+
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+skinparam usecase {
+  BackgroundColor #F7FBFF
+  BorderColor #1565C0
+}
+skinparam package {
+  BackgroundColor #FFFFFF
+  BorderColor #90A4AE
+}
+
+actor "Student" as Student
+actor "Faculty" as Faculty
+actor "Staff" as Staff
+actor "Student Organization" as Org
+actor "External User" as External
+actor "Administrator" as Admin
+actor "Security Officer" as Security
+
+rectangle "Campus Facility Reservation and Monitoring System" {
+
+  usecase "Log In" as UC01
+  usecase "View Dashboard" as UC02
+  usecase "View Campus Facilities" as UC03
+  usecase "Check Facility Availability" as UC04
+  usecase "Submit Reservation Request" as UC05
+  usecase "View My Reservations" as UC06
+  usecase "Cancel Reservation" as UC07
+
+  usecase "Review Reservation Requests" as UC08
+  usecase "Approve Reservation" as UC09
+  usecase "Reject Reservation" as UC10
+  usecase "View Utilization Reports" as UC11
+
+  usecase "Monitor After-Hours Reservations" as UC12
+  usecase "Approve Security Monitoring" as UC13
+
+  usecase "Validate Capacity" as UC14
+  usecase "Check Schedule Conflict" as UC15
+  usecase "Determine Security Requirement" as UC16
+}
+
+Student --> UC01
+Faculty --> UC01
+Staff --> UC01
+Org --> UC01
+External --> UC01
+Admin --> UC01
+Security --> UC01
+
+Student --> UC02
+Faculty --> UC02
+Staff --> UC02
+Org --> UC02
+External --> UC02
+
+Student --> UC03
+Faculty --> UC03
+Staff --> UC03
+Org --> UC03
+External --> UC03
+
+Student --> UC04
+Faculty --> UC04
+Staff --> UC04
+Org --> UC04
+External --> UC04
+
+Student --> UC05
+Faculty --> UC05
+Staff --> UC05
+Org --> UC05
+External --> UC05
+
+Student --> UC06
+Faculty --> UC06
+Staff --> UC06
+Org --> UC06
+External --> UC06
+
+Student --> UC07
+Faculty --> UC07
+Staff --> UC07
+Org --> UC07
+External --> UC07
+
+Admin --> UC08
+Admin --> UC09
+Admin --> UC10
+Admin --> UC11
+
+Security --> UC12
+Security --> UC13
+Admin --> UC12
+Admin --> UC13
+
+UC05 ..> UC14 : <<include>>
+UC05 ..> UC15 : <<include>>
+UC05 ..> UC16 : <<include>>
+UC09 ..> UC16 : <<include>>
+UC12 ..> UC16 : <<include>>
+
+@enduml
